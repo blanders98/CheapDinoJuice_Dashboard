@@ -29,11 +29,15 @@
 
 <div id="controls">
   <div id="month-display">—</div>
-  <input type="range" id="month-slider" min="0" max="0" value="0" />
-  <div class="slider-labels">
-    <span>—</span>
-    <span>—</span>
+  <button id="play-btn" title="Play through all months" aria-label="Play">&#9654;</button>
+  <div id="slider-wrap">
+    <input type="range" id="month-slider" min="0" max="0" value="0" />
+    <div class="slider-labels">
+      <span>—</span>
+      <span>—</span>
+    </div>
   </div>
+  <span id="last-updated"></span>
 </div>
 
 <main>

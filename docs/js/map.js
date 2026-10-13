@@ -168,7 +168,60 @@ function formatMonth(str) {
   return d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 }
 
+// ── Autoplay ───────────────────────────────────────────────────────────────
+const PLAY_SPEED_MS = 900;
+let playTimer = null;
+
+function stopPlay() {
+  clearInterval(playTimer);
+  playTimer = null;
+  const btn = document.getElementById('play-btn');
+  btn.classList.remove('playing');
+  btn.innerHTML = '&#9654;';
+  btn.title = 'Play through all months';
+}
+
+function startPlay() {
+  const slider = document.getElementById('month-slider');
+  const btn    = document.getElementById('play-btn');
+
+  // If already at the end, restart from the beginning
+  if (+slider.value >= +slider.max) {
+    slider.value = 0;
+    syncSliderFill(slider);
+  }
+
+  btn.classList.add('playing');
+  btn.innerHTML = '&#9646;&#9646;';
+  btn.title = 'Pause';
+
+  playTimer = setInterval(() => {
+    const next = +slider.value + 1;
+    if (next > +slider.max) {
+      stopPlay();
+      return;
+    }
+    slider.value = next;
+    syncSliderFill(slider);
+    const month = state.availableMonths[next];
+    document.getElementById('month-display').textContent = formatMonth(month);
+    loadMonth(month);
+  }, PLAY_SPEED_MS);
+}
+
+function togglePlay() {
+  if (playTimer) { stopPlay(); } else { startPlay(); }
+}
+
+// Exposed to the onclick in HTML
+window.togglePlay = togglePlay;
+
 // ── Slider wiring ──────────────────────────────────────────────────────────
+function syncSliderFill(slider) {
+  const pct = ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
+  slider.style.setProperty('--fill', `${pct}%`);
+}
+
 function initSlider(months) {
   const slider = document.getElementById('month-slider');
   slider.min = 0;
@@ -180,16 +233,13 @@ function initSlider(months) {
   document.querySelector('.slider-labels span:last-child').textContent =
     formatMonth(months[months.length - 1]);
 
-  function syncSliderFill() {
-    const pct = ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
-    slider.style.setProperty('--fill', `${pct}%`);
-  }
-  syncSliderFill();
+  syncSliderFill(slider);
 
   let debounce;
   slider.addEventListener('input', () => {
+    if (playTimer) stopPlay();   // manual drag cancels autoplay
     clearTimeout(debounce);
-    syncSliderFill();
+    syncSliderFill(slider);
     const month = months[+slider.value];
     document.getElementById('month-display').textContent = formatMonth(month);
     debounce = setTimeout(() => loadMonth(month), 120);
