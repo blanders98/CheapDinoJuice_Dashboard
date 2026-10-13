@@ -2,6 +2,8 @@
 
 Interactive US regular gasoline price dashboard. State-level weekly prices from the [EIA Open Data API](https://www.eia.gov/opendata/), stored in DuckDB, exported as static JSON, rendered with Leaflet.js on GitHub Pages.
 
+**Website:** https://blanders98.github.io/CheapDinoJuice_Dashboard/
+
 ## Stack
 
 | Layer | Tool |
