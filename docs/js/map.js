@@ -19,10 +19,11 @@ const map = L.map('map', {
   attributionControl: true,
 });
 
-// Stadia Maps Alidade Smooth Dark — free, no API key, includes labels
-L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
-  attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-  maxZoom: 20,
+// OpenStreetMap tiles — no API key, no domain restrictions.
+// CSS dark filter applied in style.css (.leaflet-tile-pane) to match the theme.
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  maxZoom: 19,
 }).addTo(map);
 
 // ── Color scale ────────────────────────────────────────────────────────────

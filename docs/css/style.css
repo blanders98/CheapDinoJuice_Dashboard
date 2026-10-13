@@ -507,6 +507,11 @@ footer a:hover { color: var(--bone); }
 /* ── Leaflet overrides ───────────────────────────────────────────────────── */
 .leaflet-container { background: #111a10 !important; }
 
+/* Invert OSM tiles to dark — only affects the tile layer, not the choropleth overlay */
+.leaflet-tile-pane {
+  filter: invert(100%) hue-rotate(180deg) brightness(90%) contrast(88%) saturate(60%);
+}
+
 .leaflet-tooltip {
   background: var(--surface-raised) !important;
   border: 1px solid var(--border-warm) !important;
