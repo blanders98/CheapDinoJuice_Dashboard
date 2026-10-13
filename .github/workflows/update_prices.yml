@@ -1,0 +1,44 @@
+name: Weekly Gas Price Update
+
+on:
+  schedule:
+    # Every Tues at 1am UTC (Monday 10pm Central)
+    - cron: '0 1 * * 2'
+  workflow_dispatch:  # Allow manual trigger from GitHub Actions UI
+
+permissions:
+  contents: write   # Required to commit + push updated JSON files
+
+jobs:
+  update-prices:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run pipeline (full reload)
+        env:
+          EIA_API_KEY: ${{ secrets.EIA_API_KEY }}
+          # Conservative memory limit for the 7GB GitHub Actions runner
+          DUCKDB_MEMORY_LIMIT: '3GB'
+          DUCKDB_THREADS: '2'
+        run: python -m pipeline.flows.gas_prices
+
+      - name: Commit and push updated data
+        run: |
+          git config --global user.name  'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add docs/data/
+          # Only commit if there are actual changes (idempotent)
+          git diff --staged --quiet || git commit -m "data: weekly gas price update $(date -u +%Y-%m-%d)"
+          git push

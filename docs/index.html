@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CheapDinoJuice — US Fossil Fuel Prices</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div id="loading">
+  <div class="fossil-spinner"></div>
+  <span>Excavating data&hellip;</span>
+</div>
+
+<header>
+  <div class="header-left">
+    <h1>Cheap<span class="dino">Dino</span>Juice</h1>
+    <p>Fossil fuel prices &middot; weekly retail &middot; all 50 states &middot; source: <a href="https://www.eia.gov/" target="_blank" rel="noopener">U.S. EIA</a></p>
+  </div>
+  <div class="era-badge">Est. 66 Ma</div>
+</header>
+
+<div id="controls">
+  <div id="month-display">—</div>
+  <input type="range" id="month-slider" min="0" max="0" value="0" />
+  <div class="slider-labels">
+    <span>—</span>
+    <span>—</span>
+  </div>
+</div>
+
+<main>
+  <div id="map"></div>
+
+  <aside id="stats-panel">
+    <div class="stat-card" id="national-avg">
+      <div class="label">National Avg</div>
+      <div class="value amber">—</div>
+      <div class="sub">$/gal · all formulations</div>
+    </div>
+    <div class="stat-card" id="cheapest-state">
+      <div class="label">Cheapest State</div>
+      <div class="value green">—</div>
+      <div class="sub">—</div>
+    </div>
+    <div class="stat-card" id="priciest-state">
+      <div class="label">Priciest State</div>
+      <div class="value red">—</div>
+      <div class="sub">—</div>
+    </div>
+    <div class="stat-card" id="hover-state" style="opacity:0.45">
+      <div class="label">Hover a State</div>
+      <div class="value amber" id="hover-value">—</div>
+      <div class="sub" id="hover-name">—</div>
+    </div>
+  </aside>
+
+  <div id="legend">
+    <span class="legend-label-title">$/gal</span>
+    <div class="legend-scale-wrap">
+      <div class="legend-gradient"></div>
+      <div class="legend-labels">
+        <span>2.50</span>
+        <span>3.00</span>
+        <span>3.50</span>
+        <span>4.00</span>
+        <span>4.50</span>
+        <span>5.00+</span>
+      </div>
+    </div>
+    <span class="legend-note">monthly avg of weekly readings</span>
+  </div>
+</main>
+
+<footer>
+  <span>
+    Data: <a href="https://www.eia.gov/opendata/" target="_blank" rel="noopener">U.S. Energy Information Administration</a>
+    &middot; Pipeline: Prefect + DuckDB &middot; Map: Leaflet.js
+  </span>
+  <span id="last-updated"></span>
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="js/map.js"></script>
+</body>
+</html>
