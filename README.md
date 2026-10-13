@@ -52,7 +52,7 @@ python -m pipeline.flows.gas_prices
 ```
 
 This will:
-1. Fetch ~7,000 weekly state-level price records from EIA
+1. Fetch thousands of weekly state-level price records from EIA
 2. Store them in `db/gas_prices.duckdb`
 3. Build `mart.monthly_state_prices` via SQL
 4. Export one JSON per month + `manifest.json` to `docs/data/`
@@ -72,13 +72,6 @@ Open `docs/index.html` in a browser via a local server (required for `fetch()` t
 python -m http.server 8000 --directory docs
 # then open http://localhost:8000
 ```
-
-## GitHub Actions setup
-
-1. Push this repo to GitHub
-2. Add `EIA_API_KEY` as a repository secret (Settings → Secrets → Actions)
-3. Enable GitHub Pages from the `main` branch, `/docs` folder
-4. The workflow runs automatically every Monday; trigger manually via Actions → "Weekly Gas Price Update" → "Run workflow"
 
 ## DuckDB schema
 
